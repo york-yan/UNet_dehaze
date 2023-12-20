@@ -1,6 +1,9 @@
-*.bmp
+
 /dataset/train_image/*.png
 train_image/*.png
 dataset/Middlebury_GT/*.png
 train_image/0.jpg
 weight/unet.pth
+dataset/Middlebury_Hazy/*.bmp
+dataset/train_GT/*.bmp
+dataset/train_hazy/*.bmp
