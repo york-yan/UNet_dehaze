@@ -6,6 +6,7 @@ import torch
 import torchvision
 from torchvision import transforms
 from PIL import Image
+import time
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -32,8 +33,10 @@ if __name__ == '__main__':
             hazy = hazy.to(device)
 
             # Forward pass
+            start = time.time()
             output = model(hazy)
-
+            end = time.time()
+            print("Inference time:", end - start)
             # Save the result image
             _hazy = hazy[0].cpu()
             _output = output[0].cpu()
