@@ -7,7 +7,8 @@ import torchvision
 from torchvision import transforms
 from PIL import Image
 import time
-
+import matplotlib.pyplot as plt
+import numpy as np
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # import ipdb;
@@ -33,14 +34,27 @@ if __name__ == '__main__':
             hazy = hazy.to(device)
 
             # Forward pass
-            start = time.time()
-            output = model(hazy)
-            end = time.time()
-            print("Inference time:", end - start)
+            print("image shape:", hazy.shape)
+            inference_times=[]
+            for i in range(20):
+                start = time.time()
+                output = model(hazy)
+                end = time.time()
+                inference_time=end-start
+                inference_times.append(inference_time)
+            median_time=np.median(inference_times)
+            plt.bar(range(1,len(inference_times)+1),inference_times)
+            plt.xticks(range(1,len(inference_times)+1))
+            plt.xlabel('Iteration')
+            plt.ylabel('Inference time (seconds)')
+            plt.title('Inference time in unet_small model and 1920*1920 images')
+            plt.axhline(y=median_time, color='r', linestyle='-',label='Median: {:.4f}s'.format(median_time))
+            plt.legend()
+            plt.show()
             # Save the result image
             _hazy = hazy[0].cpu()
             _output = output[0].cpu()
-
+            
             img = torch.stack([_hazy, _output], dim=0)
             torchvision.utils.save_image(img, f'{result_path}/{i}_result.png')
 

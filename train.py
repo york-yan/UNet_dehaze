@@ -9,15 +9,18 @@ import sys
 import torchvision
 
 sys.path.append("../")
+torch.cuda.empty_cache()
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
-weight_path='./weight/unet.pth'
-data_path='./dataset/'
-save_path='./train_image/'
+
+weight_path='./weight/unet_1920_1080.pth'
+data_path='/home/york/dataset/1-dehaze_dataset/lung/'
+save_path='./train_output/'
 
 if __name__=='__main__':
-    data_loader=DataLoader(MyDataset(data_path,mode='train'),batch_size=2,shuffle=True)
+    data_loader=DataLoader(MyDataset(data_path,mode='train'),batch_size=1,shuffle=True)
     model=unet.UNet().to(device)
 
     if os.path.exists(weight_path):
@@ -31,6 +34,8 @@ if __name__=='__main__':
     epoch=1
     for epoch in range(10):
         for i,(hazy,clear) in enumerate(data_loader):
+            # import ipdb;
+            # ipdb.set_trace()
             # print(i)
             # print(hazy.shape)
             # print(clear.shape)
@@ -45,7 +50,7 @@ if __name__=='__main__':
             loss.backward()
             optimizer.step()
 
-            if i%50==0:
+            if i%10==0:
                 print("i:",i)
                 print('epoch:',epoch,'loss:',loss.item())
                 torch.save(model.state_dict(),weight_path)

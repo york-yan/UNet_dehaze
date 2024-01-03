@@ -15,8 +15,10 @@ class MyDataset(Dataset):
         self.path = path
         self.mode = mode
         if mode == 'train':
-            self.names_hazy = [f for f in os.listdir(os.path.join(path, 'train_hazy')) if f.endswith('.bmp')]
-            self.names_image = [f for f in os.listdir(os.path.join(path, 'train_GT')) if f.endswith('.bmp')]
+            # self.names_hazy = [f for f in os.listdir(os.path.join(path, 'train_hazy')) if f.endswith('.bmp')]
+            # self.names_image = [f for f in os.listdir(os.path.join(path, 'train_GT')) if f.endswith('.bmp')]
+            self.names_hazy = [f for f in os.listdir(os.path.join(path, 'Hazy')) if f.endswith('.png')]
+            self.names_image = [f for f in os.listdir(os.path.join(path, 'GT_1920*1080')) if f.endswith('.png')]
         else:
             self.names_hazy = [f for f in os.listdir(os.path.join(path, 'Hazy')) if f.endswith('.bmp')]
             self.names_image = [f for f in os.listdir(os.path.join(path, 'GT')) if f.endswith('.bmp')]
@@ -30,8 +32,10 @@ class MyDataset(Dataset):
         image_name = f"{index_str}_Image_.bmp"
 
         if self.mode == 'train':
-            hazy_path = os.path.join(self.path, 'train_hazy', hazy_name)
-            image_path = os.path.join(self.path, 'train_GT', image_name)
+            # hazy_path = os.path.join(self.path, 'train_hazy', hazy_name)
+            # image_path = os.path.join(self.path, 'train_GT', image_name)
+            hazy_path = os.path.join(self.path, 'Hazy', hazy_name)
+            image_path = os.path.join(self.path, 'GT_1920*1080', image_name)
         else:
             hazy_path = os.path.join(self.path, 'Hazy', hazy_name)
             image_path = os.path.join(self.path, 'GT', image_name)
