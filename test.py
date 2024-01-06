@@ -23,13 +23,27 @@ if __name__ == '__main__':
     test_data_loader = DataLoader(MyDataset(data_path, mode='test'), batch_size=1, shuffle=False)
 
     model = unet.UNet().to(device)
-    model.load_state_dict(torch.load(weight_path))
+    # model.load_state_dict(torch.load(weight_path))
     model.eval()
 
     if not os.path.exists(result_path):
         os.makedirs(result_path)
 
     with torch.no_grad():
+        import ipdb;ipdb.set_trace()
+        hazy = torch.rand((1,3,1920,1920)).cuda()
+        for i in range(10):
+            output = model(hazy)
+        if True:
+            for i in range(10):
+                output = model(hazy)
+            t0 = time.time()
+            for i in range(10):
+                output = model(hazy)
+            t1 = time.time()
+            cost = t1-t0
+            print(cost/10)
+
         inference_times=[]
         inference_time=0.0
         for i, (hazy, clear) in enumerate(test_data_loader):
@@ -39,6 +53,7 @@ if __name__ == '__main__':
             output = model(hazy)
             end = time.time()
             inference_time=end-start
+
             print('inference time:',inference_time)
             inference_times.append(inference_time)
             _hazy = hazy[0].cpu()

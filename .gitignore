@@ -8,3 +8,5 @@ dataset/Middlebury_Hazy/*.bmp
 dataset/train_GT/*.bmp
 dataset/train_hazy/*.bmp
 onnx/unet.onnx
+onnx/unet_dynamic.onnx
+onnx/unet3.onnx
